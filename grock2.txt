@@ -35,3 +35,7 @@ pip install path/to/opencv_python-*.whl
 
 №№№
 pip install pybind11 --no-index --find-links https://github.com/pybind/pybind11/archive/refs/heads/master.zip
+
+###
+wget https://github.com/pybind/pybind11/archive/refs/heads/master.zip
+pip install master.zip
