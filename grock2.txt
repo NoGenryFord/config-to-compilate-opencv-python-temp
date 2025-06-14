@@ -1,0 +1,28 @@
+Клонуйте OpenCV:
+
+bash
+git clone https://github.com/opencv/opencv.git
+git clone https://github.com/opencv/opencv_contrib.git
+
+    Створіть build директорію:
+
+bash
+cd opencv
+mkdir build
+cd build
+
+    Налаштуйте CMake з GStreamer:
+
+bash
+cmake -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -D WITH_GSTREAMER=ON ..
+
+    Скомпілюйте та встановіть:
+
+bash
+make -j$(nproc)
+sudo make install
+
+    Перевірте:
+
+python
+python3 -c "import cv2; print(cv2.getBuildInformation())"
