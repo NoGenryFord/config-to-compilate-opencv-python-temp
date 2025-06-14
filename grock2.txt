@@ -39,3 +39,10 @@ pip install pybind11 --no-index --find-links https://github.com/pybind/pybind11/
 ###
 wget https://github.com/pybind/pybind11/archive/refs/heads/master.zip
 pip install master.zip
+
+
+###
+cmake -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -D WITH_GSTREAMER=ON -D BUILD_opencv_python3=ON -D PYTHON3_EXECUTABLE=$(which python3) -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF ..
+make -j$(nproc)
+cd python
+python3 setup.py bdist_wheel
