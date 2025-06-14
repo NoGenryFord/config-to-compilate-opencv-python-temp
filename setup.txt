@@ -1,0 +1,63 @@
+import setuptools
+import os
+import shutil
+
+# Отримайте версію OpenCV зі скомпільованого модуля
+# Це потрібно зробити автоматично, але для простоти ми встановимо її вручну
+# Ви можете перевірити версію, запустивши Python та імпортувавши cv2 з ~/opencv/build/lib/python3/
+# Або просто вкажіть версію, яку ви збирали, наприклад, "4.9.0"
+__version__ = "4.9.0" # <--- ЗМІНІТЬ ЦЕ НА ВАШУ ВЕРСІЮ OPENCV (наприклад, "4.9.0")
+
+# Шлях до скомпільованого модуля cv2.so
+# ЦЕЙ ШЛЯХ БУДЕ З ВАШОГО ПОПЕРЕДНЬОГО ВИТОКУ LS!
+OPENCV_LIB_PATH = "/home/Aloha1/opencv/build/lib/python3/cv2.cpython-311-aarch64-linux-gnu.so" # <--- ВСТАВТЕ СЮДИ ПОВНИЙ ШЛЯХ З КРОКУ 1
+
+# Ім'я файлу бібліотеки (наприклад, cv2.cpython-311-aarch64-linux-gnu.so)
+LIB_FILENAME = os.path.basename(OPENCV_LIB_PATH)
+
+# Вихідна директорія для бінарників, яка буде скопійована в пакет
+BUILD_DIR = "build_dist"
+if os.path.exists(BUILD_DIR):
+    shutil.rmtree(BUILD_DIR)
+os.makedirs(os.path.join(BUILD_DIR, "cv2"), exist_ok=True)
+os.makedirs(os.path.join(BUILD_DIR, "cv2", "gapi"), exist_ok=True) # Для gapi, якщо він компілювався (це зазвичай так)
+
+# Копіювання скомпільованого модуля
+shutil.copy(OPENCV_LIB_PATH, os.path.join(BUILD_DIR, "cv2", LIB_FILENAME))
+
+# Шлях до cv2.numpy (перевірте, чи він існує поруч з cv2.so)
+# Якщо ви бачили файл cv2.numpy у виводі ls, додайте його шлях тут. Якщо ні, залиште цей рядок закоментованим або видаліть.
+OPENCV_NUMPY_PATH = "/home/Aloha1/opencv/build/lib/python3/cv2.numpy" # <--- Якщо існує, вставте повний шлях сюди
+
+if os.path.exists(OPENCV_NUMPY_PATH):
+    shutil.copy(OPENCV_NUMPY_PATH, os.path.join(BUILD_DIR, "cv2", "cv2.numpy"))
+
+
+# Специфікація для setuptools
+setuptools.setup(
+    name="opencv-python",
+    version=__version__,
+    author="OpenCV Developers",
+    author_email="opencv@opencv.org",
+    description="Wrapper package for OpenCV python bindings.",
+    long_description="OpenCV is a highly optimized library for computer vision, machine learning, and image processing.",
+    url="https://opencv.org/",
+    packages=["cv2", "cv2.gapi"],
+    package_dir={
+        "cv2": os.path.join(BUILD_DIR, "cv2"),
+        "cv2.gapi": os.path.join(BUILD_DIR, "cv2", "gapi")
+    },
+    package_data={
+        "cv2": [LIB_FILENAME, "cv2.numpy"] if os.path.exists(OPENCV_NUMPY_PATH) else [LIB_FILENAME], # Включаємо .so та cv2.numpy (якщо існує)
+    },
+    include_package_data=True,
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX :: Linux",
+        "Development Status :: 5 - Production/Stable",
+        "Topic :: Scientific/Engineering :: Image Recognition",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+    python_requires='>=3.6', # Залежить від вашої версії Python, 3.11 на Pi 5
+)
