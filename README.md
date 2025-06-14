@@ -2,6 +2,7 @@
 Встановіть всі залежності для збірки, включаючи інструменти для Python.
 Bash
 
+###
 sudo apt install -y build-essential cmake pkg-config git
 sudo apt install -y libjpeg-dev libtiff-dev libpng-dev libwebp-dev libopenexr-dev
 sudo apt install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libdc1394-22-dev
