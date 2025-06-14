@@ -1,0 +1,38 @@
+Встановлення OpenCV-Python з підтримкою GStreamer на Raspberry Pi 5:
+
+    Оновіть систему:
+
+bash
+sudo apt update && sudo apt upgrade
+
+    Встановіть залежності:
+
+bash
+sudo apt install -y build-essential cmake pkg-config libjpeg-dev libpng-dev libtiff-dev \
+libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev \
+libgtk-3-dev libatlas-base-dev gfortran python3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
+    Встановіть pip:
+
+bash
+sudo apt install -y python3-pip
+
+    Створіть віртуальне середовище (опціонально):
+
+bash
+python3 -m venv opencv_env
+source opencv_env/bin/activate
+
+    Встановіть OpenCV з підтримкою GStreamer:
+
+bash
+pip install opencv-python
+
+    Перевірте встановлення:
+
+python
+python3 -c "import cv2; print(cv2.__version__); print(cv2.getBuildInformation())"
+
+Примітка: Якщо потрібна специфічна версія OpenCV, вкажіть її в pip install opencv-python==<версія>. Для зборки з джерел (якщо потрібна кастомізація):
+
+    Клонуйте репозиторій OpenCV та OpenCV contrib.
