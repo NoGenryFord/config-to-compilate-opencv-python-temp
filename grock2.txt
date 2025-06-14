@@ -11,18 +11,22 @@ cd opencv
 mkdir build
 cd build
 
-    Налаштуйте CMake з GStreamer:
+    Налаштуйте CMake з GStreamer та whl:
 
 bash
-cmake -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -D WITH_GSTREAMER=ON ..
+cmake -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -D WITH_GSTREAMER=ON -D BUILD_opencv_python3=ON -D PYTHON3_EXECUTABLE=$(which python3) -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF ..
 
-    Скомпілюйте та встановіть:
+    Скомпілюйте:
 
 bash
 make -j$(nproc)
-sudo make install
 
-    Перевірте:
+    Створіть whl пакет:
 
-python
-python3 -c "import cv2; print(cv2.getBuildInformation())"
+bash
+make python_pkg
+
+    Знайдіть whl у build/python/ та використовуйте:
+
+bash
+pip install path/to/opencv_python-*.whl
